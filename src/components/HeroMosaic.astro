@@ -1,0 +1,59 @@
+---
+import ReadTime from "./ReadTime.astro";
+import { useTranslations } from "../i18n/utils";
+import type { Lang } from "../i18n/ui";
+
+interface Story {
+  href: string;
+  title: string;
+  summary?: string;
+  image: string;
+  category: string;
+  readTimeMinutes: number;
+}
+
+interface Props {
+  lang: Lang;
+  main: Story;
+  secondary: [Story, Story];
+  storiesToday: number;
+}
+const { lang, main, secondary, storiesToday } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="max-w-4xl mx-auto px-5 pt-6">
+  <div class="flex items-center justify-between mb-3">
+    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-red-500 uppercase tracking-wide">
+      <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+      {t("hero.liveTag")}
+    </span>
+    <span class="text-xs text-neutral-400">{t("hero.dateCounter", storiesToday)}</span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <a href={main.href} class="group relative rounded-2xl overflow-hidden h-72 md:h-full block">
+      <img src={main.image} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-5">
+        <span class="inline-block bg-white text-neutral-900 text-xs font-bold px-2.5 py-1 rounded-md mb-3">{main.category}</span>
+        <h1 class="text-white text-2xl font-extrabold leading-snug mb-2">{main.title}</h1>
+        {main.summary && <p class="text-white/70 text-sm leading-relaxed mb-3 hidden md:block">{main.summary}</p>}
+        <ReadTime lang={lang} minutes={main.readTimeMinutes} class="text-white/70" />
+      </div>
+    </a>
+
+    <div class="grid grid-rows-2 gap-3">
+      {secondary.map((story) => (
+        <a href={story.href} class="group relative rounded-2xl overflow-hidden h-[138px] md:h-full block">
+          <img src={story.image} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 p-4">
+            <span class="inline-block bg-white text-neutral-900 text-[11px] font-bold px-2 py-0.5 rounded-md mb-1.5">{story.category}</span>
+            <h2 class="text-white text-sm font-bold leading-snug line-clamp-2">{story.title}</h2>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

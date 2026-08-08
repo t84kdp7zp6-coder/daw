@@ -1,0 +1,30 @@
+---
+import Badge from "./Badge.astro";
+import ReadTime from "./ReadTime.astro";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  href: string;
+  title: string;
+  summary: string;
+  image: string;
+  category: string;
+  readTimeMinutes: number;
+}
+const { lang, href, title, summary, image, category, readTimeMinutes } = Astro.props;
+---
+
+<a href={href} class="block rounded-2xl border border-neutral-100 hover:border-neutral-200 hover:shadow-sm transition-all">
+  <div class="p-3 flex gap-4">
+    <img src={image} alt="" class="w-24 h-24 rounded-xl object-cover flex-shrink-0" />
+    <div class="flex-1 min-w-0">
+      <h3 class="font-bold leading-snug mb-1.5 line-clamp-2">{title}</h3>
+      <p class="text-neutral-500 text-sm leading-relaxed mb-3 line-clamp-2">{summary}</p>
+      <div class="flex items-center gap-2">
+        <Badge label={category} variant="outline" />
+        <ReadTime lang={lang} minutes={readTimeMinutes} />
+      </div>
+    </div>
+  </div>
+</a>

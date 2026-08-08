@@ -1,0 +1,19 @@
+---
+import { useTranslations } from "../i18n/utils";
+import type { Lang } from "../i18n/ui";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-neutral-100 mt-16">
+  <div class="max-w-4xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-neutral-400">
+    <span>Wayfarer &copy; {year}. {t("footer.rights")}</span>
+    <div class="flex items-center gap-4">
+      <a href={`/${lang}/wiki/`} class="hover:text-neutral-700">{t("nav.wiki")}</a>
+      <a href={`/${lang}/`} class="hover:text-neutral-700">{t("nav.home")}</a>
+    </div>
+  </div>
+</footer>
